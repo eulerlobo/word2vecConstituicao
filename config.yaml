@@ -1,0 +1,6 @@
+PROJECT_CONFIGURATION:
+  verbose: true
+  list_words_validation: ["presidente", "vereadores", "deputados", "homem", "mulher", "criança", "petróleo", "gás", "minerais", "crimes", "jurisdição"]
+
+SEED_CONFIGURATION:
+  txt_file: "CF88_EC99_livro.txt"
