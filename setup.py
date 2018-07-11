@@ -2,6 +2,7 @@ import sys
 import csv
 import gensim
 import logging
+import os.path
 
 from gensim.models import KeyedVectors
 
@@ -29,13 +30,22 @@ def main():
     logging.info("Done reading data file")
 
     # build vocabulary and train model
-    model = gensim.models.Word2Vec(
-        documents,
-        size=150,
-        window=10,
-        min_count=2,
-        workers=10)
-    model.train(documents, total_examples=len(documents), epochs=10)
+
+    model = None
+    if (os.path.isfile('constituicao.model')):
+        model = gensim.models.Word2Vec.load('constituicao.model')
+    else:
+        model = gensim.models.Word2Vec(
+            documents,
+            size=150,
+            window=10,
+            min_count=2,
+            workers=10
+        )
+        model.train(documents, total_examples=len(documents), epochs=10)
+
+        #Save model
+        model.save('constituicao.model')
 
     wordVectors = model.wv
 
@@ -88,6 +98,7 @@ def main():
         for similar in mostSimilar:
             tempArray.append(similar)
 
+        print(tempArray)
         mostSimilarWords.append(tempArray)
 
     with open('csv/mostsimilarwords.csv', 'w', newline='', encoding='utf-8') as csvfile:
